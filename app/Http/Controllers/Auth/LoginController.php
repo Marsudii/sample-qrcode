@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+use Illuminate\Support\Facades\Auth as FacadesAuth;
+
 class LoginController extends Controller
 {
     /*
@@ -36,5 +38,16 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    protected function redirectTo()
+    {
+        $user = FacadesAuth::user();
+
+        if ($user['role'] == 'Pengguna') {
+            return route();
+        } else {
+            return route('admin.home');
+        }
     }
 }
